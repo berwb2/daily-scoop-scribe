@@ -1,27 +1,12 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ArticleContent from '../components/articles/ArticleContent';
 import RelatedArticles from '../components/articles/RelatedArticles';
-import { allArticles } from '../data/mockData';
+import { useArticle } from '../hooks/useArticles';
 
 const ArticlePage: React.FC = () => {
   const { articleSlug } = useParams<{articleSlug: string}>();
-  
-  const article = useMemo(() => {
-    return allArticles.find(article => article.slug === articleSlug);
-  }, [articleSlug]);
-
-  const relatedArticles = useMemo(() => {
-    if (!article) return [];
-    
-    return allArticles
-      .filter(a => 
-        a.id !== article.id && 
-        (a.category.slug === article.category.slug || 
-         a.relevance === article.relevance)
-      )
-      .slice(0, 3);
-  }, [article]);
+  const { article, loading, error } = useArticle(articleSlug || '');
   
   useEffect(() => {
     if (article) {
@@ -34,10 +19,24 @@ const ArticlePage: React.FC = () => {
     };
   }, [article]);
   
-  if (!article) {
+  if (loading) {
     return (
       <div className="container mx-auto px-4 py-12">
-        <h1 className="text-2xl">Article not found</h1>
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-3/4 mb-4"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !article) {
+    return (
+      <div className="container mx-auto px-4 py-12">
+        <h1 className="text-2xl text-red-600">
+          {error ? 'Error loading article' : 'Article not found'}
+        </h1>
       </div>
     );
   }
@@ -46,18 +45,21 @@ const ArticlePage: React.FC = () => {
     <div className="pt-6 pb-12">
       <ArticleContent 
         title={article.title}
-        content={article.content || ''}
+        content={article.content}
         publishedAt={article.publishedAt}
-        author={{
-          name: 'Elokusa Zondi',
-          title: 'Senior Geopolitical Analyst',
-          imageUrl: 'https://images.pexels.com/photos/2381069/pexels-photo-2381069.jpeg'
+        author={article.author || {
+          name: 'Unknown Author',
+          title: '',
+          imageUrl: ''
         }}
-        category={article.category}
+        category={article.category || {
+          name: 'Uncategorized',
+          slug: 'uncategorized'
+        }}
         estimatedReadingTime={article.readingTime}
       />
       
-      <RelatedArticles articles={relatedArticles} />
+      {article.id && <RelatedArticles articles={[]} />}
     </div>
   );
 };
