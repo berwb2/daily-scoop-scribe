@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Search, Sun, Moon, Menu, X, ChevronDown } from 'lucide-react';
+import { Search, Sun, Moon, Menu, X, ChevronDown, Hash } from 'lucide-react';
 import Ticker from '../common/Ticker';
 import Logo from '../common/Logo';
 import { useTheme } from '../../hooks/useTheme';
@@ -47,7 +48,7 @@ const Header: React.FC = () => {
       <div className="container mx-auto">
         {/* Search Overlay */}
         {searchOpen && (
-          <div className="absolute inset-0 bg-white dark:bg-gray-900 p-4">
+          <div className="absolute inset-0 bg-white dark:bg-gray-900 p-4 z-50">
             <form onSubmit={handleSearch} className="flex items-center">
               <input
                 type="search"
@@ -105,6 +106,9 @@ const Header: React.FC = () => {
               <Link to="/category/capetown" className={`nav-link text-secondary font-medium ${isActive('/category/capetown')}`}>
                 Cape Town Focus
               </Link>
+              <Link to="/tags" className={`nav-link flex items-center text-primary ${isActive('/tags')}`}>
+                <Hash size={16} className="mr-1" /> Tags
+              </Link>
             </nav>
           </div>
 
@@ -135,13 +139,16 @@ const Header: React.FC = () => {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-white dark:bg-gray-900 absolute top-full left-0 right-0 shadow-lg animate-fadeIn">
+          <div className="md:hidden bg-white dark:bg-gray-900 absolute top-full left-0 right-0 shadow-lg animate-fadeIn z-30">
             <nav className="flex flex-col p-4">
               <Link to="/" className="py-3 border-b border-gray-100 dark:border-gray-800" onClick={toggleMobileMenu}>Home</Link>
               <Link to="/category/geopolitics" className="py-3 border-b border-gray-100 dark:border-gray-800" onClick={toggleMobileMenu}>Geopolitics</Link>
               <Link to="/category/tech" className="py-3 border-b border-gray-100 dark:border-gray-800" onClick={toggleMobileMenu}>Tech</Link>
               <Link to="/category/economy" className="py-3 border-b border-gray-100 dark:border-gray-800" onClick={toggleMobileMenu}>Economy</Link>
-              <Link to="/category/capetown" className="py-3 font-medium text-secondary" onClick={toggleMobileMenu}>Cape Town Focus</Link>
+              <Link to="/category/capetown" className="py-3 border-b border-gray-100 dark:border-gray-800 font-medium text-secondary" onClick={toggleMobileMenu}>Cape Town Focus</Link>
+              <Link to="/tags" className="py-3 flex items-center" onClick={toggleMobileMenu}>
+                <Hash size={16} className="mr-1" /> Tags
+              </Link>
             </nav>
           </div>
         )}

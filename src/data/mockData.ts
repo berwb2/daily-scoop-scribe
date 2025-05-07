@@ -1,5 +1,37 @@
 import { ArticleProps } from '../components/articles/ArticleCard';
 
+// Mock tags data
+export const articleTags = [
+  { id: 1, name: 'BRICS', slug: 'brics' },
+  { id: 2, name: 'Trade', slug: 'trade' },
+  { id: 3, name: 'Diplomacy', slug: 'diplomacy' },
+  { id: 4, name: 'Economy', slug: 'economy' },
+  { id: 5, name: 'Technology', slug: 'technology' },
+  { id: 6, name: 'Innovation', slug: 'innovation' },
+  { id: 7, name: 'Investment', slug: 'investment' },
+  { id: 8, name: 'Climate', slug: 'climate' },
+  { id: 9, name: 'Energy', slug: 'energy' },
+  { id: 10, name: 'Infrastructure', slug: 'infrastructure' },
+  { id: 11, name: 'Finance', slug: 'finance' },
+  { id: 12, name: 'Agriculture', slug: 'agriculture' },
+];
+
+// Mock references data
+export const articleReferences = [
+  { 
+    text: 'South African Department of Trade and Industry. (2023). BRICS Cooperation Framework.',
+    url: 'https://www.thedtic.gov.za/brics-cooperation-framework'
+  },
+  { 
+    text: 'World Bank. (2023). Global Economic Prospects, June 2023.',
+    url: 'https://www.worldbank.org/en/publication/global-economic-prospects'
+  },
+  { 
+    text: 'African Development Bank. (2023). African Economic Outlook.',
+    url: 'https://www.afdb.org/en/knowledge/publications/african-economic-outlook'
+  }
+];
+
 // Mock articles data
 export const featuredArticle: ArticleProps = {
   id: 1,
@@ -14,7 +46,8 @@ export const featuredArticle: ArticleProps = {
   readingTime: 8,
   relevance: 'global',
   imageUrl: 'https://images.pexels.com/photos/1098365/pexels-photo-1098365.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  featured: true
+  featured: true,
+  tags: [articleTags[0], articleTags[1], articleTags[2]]
 };
 
 export const geopoliticsArticles: ArticleProps[] = [
@@ -256,6 +289,20 @@ export const sampleArticleContent = `
 <p>
   The coming years will be decisive in determining whether South Africa can effectively leverage its position at this crossroads of global trade realignment. Success will require nimble diplomacy, strategic economic planning, and a clear vision for how to advance both national and continental interests in this rapidly evolving global landscape.
 </p>
+
+<h2>New Investment Opportunities</h2>
+
+<p>
+  With BRICS expansion comes new avenues for cross-border investment. The New Development Bank, headquartered in Shanghai with its African Regional Center in Johannesburg, is positioned to finance major infrastructure and sustainable development projects across the continent. South African financial institutions are well-positioned to facilitate and benefit from these investment flows.
+</p>
+
+<p>
+  Cape Town's emergence as a tech and financial services hub adds another dimension to South Africa's strategic advantage. The city's vibrant startup ecosystem and established financial infrastructure make it an attractive entry point for BRICS investors looking to gain exposure to African markets.
+</p>
+
+<p>
+  Recent data from the South African Reserve Bank indicates a 27% increase in foreign direct investment from BRICS nations in the past fiscal year, with particular growth in renewable energy, telecommunications, and agricultural technology sectors.
+</p>
 `;
 
 // Sample article with all content for article page
@@ -276,10 +323,17 @@ export const fullArticle = {
   author: {
     name: 'Elokusa Zondi',
     title: 'Senior Geopolitical Analyst',
-    imageUrl: 'https://images.pexels.com/photos/2381069/pexels-photo-2381069.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
+    imageUrl: 'https://images.pexels.com/photos/2381069/pexels-photo-2381069.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    bio: 'Elokusa Zondi is a geopolitical analyst specializing in African international relations and trade policy. With over 15 years of experience, she has advised governments and multinational corporations on strategic positioning in emerging markets.',
+    twitter: 'elokusa_zondi',
+    linkedin: 'https://linkedin.com/in/elokusa-zondi'
   },
   featured: true,
-  related: [2, 3, 8]
+  related: [2, 3, 8],
+  tags: [articleTags[0], articleTags[1], articleTags[2]],
+  metaDescription: 'Analysis of the BRICS alliance expansion and its implications for South African trade, economy and regional influence in the changing global order.',
+  metaKeywords: ['BRICS', 'South Africa', 'global trade', 'geopolitics', 'AfCFTA'],
+  references: articleReferences
 };
 
 // Related articles are needed for article page
@@ -296,4 +350,18 @@ export const allArticles = [
   ...techArticles,
   ...economyArticles,
   ...capeTownArticles
+];
+
+// Tags page data
+export const popularTags = [
+  { id: 1, name: 'BRICS', slug: 'brics', count: 23 },
+  { id: 2, name: 'Trade', slug: 'trade', count: 18 },
+  { id: 3, name: 'Technology', slug: 'technology', count: 32 },
+  { id: 4, name: 'Economy', slug: 'economy', count: 45 },
+  { id: 5, name: 'Climate', slug: 'climate', count: 16 },
+  { id: 6, name: 'Energy', slug: 'energy', count: 21 },
+  { id: 7, name: 'Innovation', slug: 'innovation', count: 29 },
+  { id: 8, name: 'Diplomacy', slug: 'diplomacy', count: 14 },
+  { id: 9, name: 'Finance', slug: 'finance', count: 19 },
+  { id: 10, name: 'Infrastructure', slug: 'infrastructure', count: 12 },
 ];
