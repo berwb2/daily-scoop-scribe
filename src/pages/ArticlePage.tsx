@@ -4,13 +4,10 @@ import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import ArticleContent from '../components/articles/ArticleContent';
 import RelatedArticles from '../components/articles/RelatedArticles';
-import { useArticle } from '../hooks/useArticles';
 import { fullArticle, relatedArticles } from '../data/mockData'; // For demo purposes
 
 const ArticlePage: React.FC = () => {
   const { articleSlug } = useParams<{articleSlug: string}>();
-  // const { article, loading, error } = useArticle(articleSlug || ''); // Uncomment this in a real app
-  
   // For demo purposes, we're using the mock data instead of the API call
   const loading = false;
   const error = null;
@@ -86,15 +83,17 @@ const ArticlePage: React.FC = () => {
           content={article.content}
           publishedAt={article.publishedAt}
           author={article.author || {
+            id: 0,
             name: 'Unknown Author',
             title: '',
             imageUrl: ''
           }}
           category={article.category || {
+            id: 0,
             name: 'Uncategorized',
             slug: 'uncategorized'
           }}
-          estimatedReadingTime={article.estimatedReadingTime || article.readingTime}
+          estimatedReadingTime={article.readingTime}
           relevance={article.relevance}
           tags={article.tags}
           references={article.references}

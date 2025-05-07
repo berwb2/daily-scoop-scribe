@@ -1,9 +1,28 @@
+
 import { Article, ArticleFilters, Author, Category } from '../types/article';
+import { DynamicArticle, ArticleApiResponse } from '../types/articleSchema';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const DYNAMIC_API_URL = import.meta.env.VITE_DYNAMIC_API_URL || 'http://localhost:3000/api';
 
 async function fetchAPI<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`${API_URL}${endpoint}`, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`API Error: ${response.statusText}`);
+  }
+
+  return response.json();
+}
+
+async function fetchDynamicAPI<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+  const response = await fetch(`${DYNAMIC_API_URL}${endpoint}`, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
@@ -42,6 +61,38 @@ export const articlesAPI = {
   getFeatured: () => {
     return fetchAPI<Article[]>('/articles/featured');
   },
+};
+
+// New API methods for dynamic content
+export const dynamicArticlesAPI = {
+  // Get all dynamic articles with optional pagination and filters
+  getAll: (page = 1, limit = 10, filters?: { category?: string, tag?: string }) => {
+    const params = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
+    
+    if (filters?.category) {
+      params.append('category', filters.category);
+    }
+    
+    if (filters?.tag) {
+      params.append('tag', filters.tag);
+    }
+    
+    return fetchDynamicAPI<ArticleApiResponse>(`/articles?${params.toString()}`);
+  },
+  
+  // Get a single article by its slug
+  getBySlug: (slug: string) => {
+    return fetchDynamicAPI<DynamicArticle>(`/articles/${slug}`);
+  },
+  
+  // Submit a new article (for admin or n8n workflow usage)
+  submitArticle: (article: Omit<DynamicArticle, 'slug'>, apiKey?: string) => {
+    return fetchDynamicAPI<{ success: boolean, slug: string }>('/articles', {
+      method: 'POST',
+      headers: apiKey ? { 'X-API-Key': apiKey } : {},
+      body: JSON.stringify(article),
+    });
+  }
 };
 
 export const categoriesAPI = {
