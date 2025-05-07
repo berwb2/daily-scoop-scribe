@@ -1,15 +1,32 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { useDynamicArticles } from '../hooks/useDynamicArticles';
 import DynamicArticleCard from '../components/articles/DynamicArticleCard';
-import { ChevronLeft, ChevronRight, Filter } from 'lucide-react';
+import ArticleFilters from '../components/articles/ArticleFilters';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const DynamicArticlesPage: React.FC = () => {
   const [page, setPage] = useState(1);
   const [filters, setFilters] = useState<{ category?: string, tag?: string }>({});
   const { articles, pagination, loading, error } = useDynamicArticles(page, 12, filters);
+  
+  // Extract unique categories and tags from articles for filters
+  const { categories, tags } = useMemo(() => {
+    const categorySet = new Set<string>();
+    const tagSet = new Set<string>();
+    
+    articles.forEach(article => {
+      categorySet.add(article.category);
+      article.tags.forEach(tag => tagSet.add(tag));
+    });
+    
+    return {
+      categories: Array.from(categorySet),
+      tags: Array.from(tagSet)
+    };
+  }, [articles]);
   
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
@@ -37,15 +54,12 @@ const DynamicArticlesPage: React.FC = () => {
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-headings">Latest Articles</h1>
           
-          <div className="flex gap-4">
-            <div className="relative">
-              <button className="flex items-center px-4 py-2 bg-gray-100 rounded-md text-sm">
-                <Filter size={16} className="mr-2" />
-                Filter by Category
-              </button>
-              {/* Dropdown menu could be implemented here */}
-            </div>
-          </div>
+          <ArticleFilters 
+            onCategoryChange={handleCategoryFilter}
+            onTagChange={handleTagFilter}
+            categories={categories}
+            tags={tags}
+          />
         </div>
         
         {loading && (

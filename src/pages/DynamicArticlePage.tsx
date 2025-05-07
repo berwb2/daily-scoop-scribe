@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import ArticleContent from '../components/articles/ArticleContent';
 import RelatedArticles from '../components/articles/RelatedArticles';
 import { useDynamicArticle } from '../hooks/useDynamicArticles';
-import { fullArticle, relatedArticles } from '../data/mockData'; // For fallback
+import { relatedArticles } from '../data/mockData'; // For fallback
 import { calculateReadingTime } from '../utils/contentUtils';
 import { DynamicArticle } from '../types/articleSchema';
 import { Article } from '../types/article';

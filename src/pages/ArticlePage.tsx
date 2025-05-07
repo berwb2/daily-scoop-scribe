@@ -7,7 +7,11 @@ import RelatedArticles from '../components/articles/RelatedArticles';
 import { fullArticle, relatedArticles } from '../data/mockData'; // For demo purposes
 
 const ArticlePage: React.FC = () => {
+  // We acknowledge articleSlug here even though we're using static mock data
   const { articleSlug } = useParams<{articleSlug: string}>();
+  // In a real implementation, this would be used to fetch the article
+  console.log(`Loading article with slug: ${articleSlug}`);
+  
   // For demo purposes, we're using the mock data instead of the API call
   const loading = false;
   const error = null;

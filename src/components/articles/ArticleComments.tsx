@@ -13,13 +13,13 @@ interface Comment {
 }
 
 interface ArticleCommentsProps {
-  articleId: number;
+  articleId: number; // This is kept for future implementation with real data
 }
 
-const ArticleComments: React.FC<ArticleCommentsProps> = ({ articleId }) => {
+const ArticleComments: React.FC<ArticleCommentsProps> = () => {
   const [commentText, setCommentText] = useState('');
   
-  // Mock data - in a real app, this would come from an API
+  // Mock data - in a real app, this would come from an API using the articleId
   const comments: Comment[] = [
     {
       id: 1,
